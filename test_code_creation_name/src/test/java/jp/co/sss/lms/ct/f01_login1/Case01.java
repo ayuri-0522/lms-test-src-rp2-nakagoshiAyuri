@@ -1,6 +1,7 @@
 package jp.co.sss.lms.ct.f01_login1;
 
 import static jp.co.sss.lms.ct.util.WebDriverUtils.*;
+import static org.junit.Assert.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 /**
  * 結合テスト ログイン機能①
  * ケース01
- * @author holy
+ * @author 中越愛百合
  */
 @TestMethodOrder(OrderAnnotation.class)
 @DisplayName("ケース01 ログイン画面への遷移")
@@ -35,7 +36,17 @@ public class Case01 {
 	@Order(1)
 	@DisplayName("テスト01 トップページURLでアクセス")
 	void test01() {
-		// TODO ここに追加
+
+		//指定したURLの画面を開く
+		webDriver.get("http://localhost:8080/lms");
+
+		//指定したURLと一致しているか確認する
+		assertEquals("http://localhost:8080/lms/", webDriver.getCurrentUrl());
+
+		//test1のエビデンスを取得する
+		getEvidence(new Object() {
+		});
+
 	}
 
 }
