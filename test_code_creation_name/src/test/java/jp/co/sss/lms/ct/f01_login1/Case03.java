@@ -53,23 +53,21 @@ public class Case03 {
 	@Order(2)
 	@DisplayName("テスト02 初回ログイン済みの受講生ユーザーでログイン")
 	void test02() {
-		// 1. ログイン画面を開く
-		webDriver.get("http://localhost:8080/lms");
 
-		// 2. ログイン・パスワードを入力
+		// 1. ログイン・パスワードを入力
 		webDriver.findElement(By.id("loginId")).sendKeys("StudentAA01");
 		webDriver.findElement(By.id("password")).sendKeys("StudentAA1");
 
-		// 3. ログインボタンをクリック
+		// 2. ログインボタンをクリック
 		webDriver.findElement(By.className("btn-primary")).click();
 
-		// 4. コース詳細画面のURLになっているか確認する
+		// 3. コース詳細画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/course/detail", webDriver.getCurrentUrl());
 
-		// 5. コース詳細画面が遷移した（タイトルが変わったか）ことの確認
+		// 4. コース詳細画面が遷移した（タイトルが変わったか）ことの確認
 		assertEquals("コース詳細 | LMS", webDriver.getTitle());
 
-		//6.test3のエビデンスを取得する
+		// 5.test3のエビデンスを取得する
 		getEvidence(new Object() {
 		});
 	}
