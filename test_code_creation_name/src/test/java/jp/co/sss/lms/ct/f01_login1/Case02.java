@@ -43,6 +43,10 @@ public class Case02 {
 
 		//指定したURLと一致しているか確認する
 		assertEquals("http://localhost:8080/lms/", webDriver.getCurrentUrl());
+
+		//test1のエビデンスを取得する
+		getEvidence(new Object() {
+		});
 	}
 
 	@Test
@@ -50,26 +54,23 @@ public class Case02 {
 	@DisplayName("テスト02 DBに登録されていないユーザーでログイン")
 	void test02() {
 
-		// 1. ログイン画面を開く
-		webDriver.get("http://localhost:8080/lms");
-
-		// 2. 誤った情報を入力
+		// 1. 誤った情報を入力
 		webDriver.findElement(By.id("loginId")).sendKeys("student00");
 		webDriver.findElement(By.id("password")).sendKeys("student00");
 
-		// 3. ログインボタンをクリック
+		// 2. ログインボタンをクリック
 		webDriver.findElement(By.className("btn-primary")).click();
 
-		// 4. 検証：エラーメッセージが表示されているか
+		// 3. 検証：エラーメッセージが表示されているか
 		WebElement errorMsg = webDriver.findElement(By.className("help-inline"));
 
-		// メッセージが画面に表示されているか（CSS等で隠れていないか）
+		// 4.メッセージが画面に表示されているか（CSS等で隠れていないか）
 		assertTrue(errorMsg.isDisplayed());
 
-		// 検証：画面が遷移していない（タイトルが変わっていない）ことの確認
+		// 5.画面が遷移していない（タイトルが変わっていない）ことの確認
 		assertEquals("ログイン | LMS", webDriver.getTitle());
 
-		//test2のエビデンスを取得する
+		// 6.test2のエビデンスを取得する
 		getEvidence(new Object() {
 		});
 	}
