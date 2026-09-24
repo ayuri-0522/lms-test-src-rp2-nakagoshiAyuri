@@ -69,7 +69,7 @@ public class Case03 {
 		// 5. コース詳細画面が遷移した（タイトルが変わったか）ことの確認
 		assertEquals("コース詳細 | LMS", webDriver.getTitle());
 
-		//test3のエビデンスを取得する
+		//6.test3のエビデンスを取得する
 		getEvidence(new Object() {
 		});
 	}
