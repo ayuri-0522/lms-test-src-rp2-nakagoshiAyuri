@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -161,12 +160,7 @@ public class Case06 {
 				webDriver.getCurrentUrl().contains("frequentlyAskedQuestionCategoryId=1"));
 
 		// 検索結果欄までスクロール
-		WebElement searchResult = webDriver.findElement(
-				By.cssSelector("table.sortabletable"));
-
-		((JavascriptExecutor) webDriver).executeScript(
-				"arguments[0].scrollIntoView({block: 'center'});",
-				searchResult);
+		scrollBy("1000");
 
 		// 3.test5のエビデンスを取得する
 		getEvidence(new Object() {
@@ -178,15 +172,7 @@ public class Case06 {
 	@DisplayName("テスト06 検索結果の質問をクリックしその回答を表示")
 	void test06() {
 		//1.検索結果欄の質問をクリックする
-		WebElement question = webDriver.findElement(
-				By.cssSelector("dt.mb10"));
-
-		//(指定の場所までスクロールする)
-		((JavascriptExecutor) webDriver).executeScript(
-				"arguments[0].scrollIntoView({block: 'center'});",
-				question);
-
-		question.click();
+		webDriver.findElement(By.cssSelector("dt.mb10")).click();
 
 		// 2.質問の下に「A.～…」と続く回答が表示されるか確認
 		WebElement answer = webDriver.findElement(

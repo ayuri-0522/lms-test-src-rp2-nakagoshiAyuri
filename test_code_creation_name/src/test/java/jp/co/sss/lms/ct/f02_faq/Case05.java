@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -163,10 +162,8 @@ public class Case05 {
 
 		assertTrue(question.getText().contains("キャンセル"));
 
-		// 検索結果の位置までスクロール
-		((JavascriptExecutor) webDriver).executeScript(
-				"arguments[0].scrollIntoView({block: 'center'});",
-				question);
+		// 検索結果欄までスクロール
+		scrollBy("1000");
 
 		// 4.test5のエビデンスを取得する
 		getEvidence(new Object() {
@@ -180,8 +177,7 @@ public class Case05 {
 	void test06() {
 
 		//サイトの一番上まで戻る
-		((JavascriptExecutor) webDriver).executeScript(
-				"window.scrollTo(0, 0);");
+		scrollBy("-1000");
 
 		// 1.『検索』ボタンをクリックする
 		webDriver.findElement(
