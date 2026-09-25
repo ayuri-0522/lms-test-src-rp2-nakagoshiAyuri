@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -20,7 +21,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * 結合テスト よくある質問機能
  * ケース05
- * @author holy
+ * @author 中越 愛百合
  */
 @TestMethodOrder(OrderAnnotation.class)
 @DisplayName("ケース05 キーワード検索 正常系")
@@ -162,6 +163,11 @@ public class Case05 {
 
 		assertTrue(question.getText().contains("キャンセル"));
 
+		// 検索結果の位置までスクロール
+		((JavascriptExecutor) webDriver).executeScript(
+				"arguments[0].scrollIntoView({block: 'center'});",
+				question);
+
 		// 4.test5のエビデンスを取得する
 		getEvidence(new Object() {
 		});
@@ -172,6 +178,11 @@ public class Case05 {
 	@Order(6)
 	@DisplayName("テスト06 「クリア」ボタン押下で入力した「キャンセル」を消去")
 	void test06() {
+
+		//サイトの一番上まで戻る
+		((JavascriptExecutor) webDriver).executeScript(
+				"window.scrollTo(0, 0);");
+
 		// 1.『検索』ボタンをクリックする
 		webDriver.findElement(
 				By.cssSelector("input[value='クリア']")).click();

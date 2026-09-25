@@ -21,7 +21,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * 結合テスト よくある質問機能
  * ケース06
- * @author holy
+ * @author 中越 愛百合
  */
 @TestMethodOrder(OrderAnnotation.class)
 @DisplayName("ケース06 カテゴリ検索 正常系")
@@ -160,7 +160,15 @@ public class Case06 {
 		assertTrue(
 				webDriver.getCurrentUrl().contains("frequentlyAskedQuestionCategoryId=1"));
 
-		// 8.test5のエビデンスを取得する
+		// 検索結果欄までスクロール
+		WebElement searchResult = webDriver.findElement(
+				By.cssSelector("table.sortabletable"));
+
+		((JavascriptExecutor) webDriver).executeScript(
+				"arguments[0].scrollIntoView({block: 'center'});",
+				searchResult);
+
+		// 3.test5のエビデンスを取得する
 		getEvidence(new Object() {
 		});
 	}
