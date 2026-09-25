@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * 結合テスト よくある質問機能
  * ケース04
- * @author holy
+ * @author 中越 愛百合
  */
 @TestMethodOrder(OrderAnnotation.class)
 @DisplayName("ケース04 よくある質問画面への遷移")
