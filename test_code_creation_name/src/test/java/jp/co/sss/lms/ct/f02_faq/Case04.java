@@ -45,7 +45,7 @@ public class Case04 {
 	@DisplayName("テスト01 トップページURLでアクセス")
 	void test01() {
 		//指定したURLの画面を開く
-		webDriver.get("http://localhost:8080/lms");
+		goTo("http://localhost:8080/lms");
 
 		//指定したURLと一致しているか確認する
 		assertEquals("http://localhost:8080/lms/", webDriver.getCurrentUrl());

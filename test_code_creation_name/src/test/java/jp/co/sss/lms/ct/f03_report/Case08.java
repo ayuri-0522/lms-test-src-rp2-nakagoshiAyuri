@@ -46,7 +46,7 @@ public class Case08 {
 	@DisplayName("テスト01 トップページURLでアクセス")
 	void test01() {
 		//指定したURLの画面を開く
-		webDriver.get("http://localhost:8080/lms");
+		goTo("http://localhost:8080/lms");
 
 		//指定したURLと一致しているか確認する
 		assertEquals("http://localhost:8080/lms/", webDriver.getCurrentUrl());
@@ -101,8 +101,8 @@ public class Case08 {
 		assertEquals("http://localhost:8080/lms/section/detail", webDriver.getCurrentUrl());
 
 		// 4. ボタンが「日報【デモ】を提出する」に変更されているか確認
-		assertEquals("提出済み日報【デモ】を確認する",
-				webDriver.findElement(By.cssSelector("input.btn-default[value='提出済み日報【デモ】を確認する']"))
+		assertEquals("提出済み週報【デモ】を確認する",
+				webDriver.findElement(By.cssSelector("input.btn-default[value='提出済み週報【デモ】を確認する']"))
 						.getAttribute("value"));
 
 		// 5.test3のエビデンスを取得する
@@ -115,8 +115,12 @@ public class Case08 {
 	@Order(4)
 	@DisplayName("テスト04 「確認する」ボタンを押下しレポート登録画面に遷移")
 	void test04() {
-		// 1.「日報【デモ】を提出する」をクリック
-		webDriver.findElement(By.cssSelector("input.btn-default[value='提出済み日報【デモ】を確認する']")).click();
+
+		// 「提出済み週報【デモ】を確認する」までスクロール
+		scrollBy("400");
+
+		// 1.「提出済み週報【デモ】を確認する」をクリック
+		webDriver.findElement(By.cssSelector("input.btn-default[value='提出済み週報【デモ】を確認する']")).click();
 
 		// 2. レポート登録画面のURLが表示されるまで待つ
 		wait.until(ExpectedConditions.urlToBe("http://localhost:8080/lms/report/regist"));
@@ -138,7 +142,6 @@ public class Case08 {
 	void test05() {
 
 		// 1.テキストボックスに「修正」と入力する
-
 		webDriver.findElement(By.id("content_0")).sendKeys("修正");
 
 		// 2. 『提出する』ボタンをクリック
