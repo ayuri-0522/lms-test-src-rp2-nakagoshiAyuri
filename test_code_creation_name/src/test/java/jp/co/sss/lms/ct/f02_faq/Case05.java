@@ -3,8 +3,6 @@ package jp.co.sss.lms.ct.f02_faq;
 import static jp.co.sss.lms.ct.util.WebDriverUtils.*;
 import static org.junit.Assert.*;
 
-import java.time.Duration;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +11,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * 結合テスト よくある質問機能
@@ -37,9 +32,6 @@ public class Case05 {
 	static void after() {
 		closeDriver();
 	}
-
-	//1.待ち時間を最大10秒に設定する
-	final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
 
 	@Test
 	@Order(1)
@@ -68,7 +60,7 @@ public class Case05 {
 		webDriver.findElement(By.className("btn-primary")).click();
 
 		// 3. コース詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlToBe("http://localhost:8080/lms/course/detail"));
+		pageLoadTimeout(30);
 
 		// 4. コース詳細画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/course/detail", webDriver.getCurrentUrl());
@@ -89,13 +81,13 @@ public class Case05 {
 		webDriver.findElement(By.className("dropdown-toggle")).click();
 
 		// 2. ヘッダーの機能タグのヘルプリンクをクリック
-		wait.until(ExpectedConditions.elementToBeClickable(By.linkText("ヘルプ")));
+		visibilityTimeout(By.linkText("ヘルプ"), 10);
 
 		// 3. ヘッダーの機能リンクをクリック
 		webDriver.findElement(By.linkText("ヘルプ")).click();
 
-		// 4. コース詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlToBe("http://localhost:8080/lms/help"));
+		// 4. ヘルプ画面の要素が表示されるまで待つ
+		visibilityTimeout(By.tagName("h2"), 10);
 
 		// 5. コース詳細画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/help", webDriver.getCurrentUrl());
@@ -116,14 +108,13 @@ public class Case05 {
 		String originalWindow = webDriver.getWindowHandle();
 
 		// 2.ヘッダーの機能タグのヘルプリンクをクリック
-		wait.until(ExpectedConditions.elementToBeClickable(By.linkText("よくある質問")));
+		visibilityTimeout(By.linkText("よくある質問"), 10);
 
 		// 3.ヘッダーの機能リンクをクリック
 		webDriver.findElement(By.linkText("よくある質問")).click();
 
 		// 4.新しいタブが開くまで待つ
-		wait.until(
-				ExpectedConditions.numberOfWindowsToBe(2));
+		pageLoadTimeout(10);
 
 		// 5.新しいタブへ切り替える
 		for (String windowHandle : webDriver.getWindowHandles()) {
@@ -155,13 +146,12 @@ public class Case05 {
 		webDriver.findElement(By.className("btn-primary")).click();
 
 		// 3.『キャンセル』の文字が含まれる検索結果を検索結果に表示する
+		pageLoadTimeout(10);
 
-		WebElement question = wait.until(
-				ExpectedConditions.visibilityOfElementLocated(
-						By.cssSelector("dt")));
-
-		assertTrue(question.getText().contains("キャンセル"));
-
+		assertTrue(
+				webDriver.findElement(By.cssSelector("dt"))
+						.getText()
+						.contains("キャンセル"));
 		// 検索結果欄までスクロール
 		scrollBy("1000");
 
