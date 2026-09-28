@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
@@ -68,7 +67,7 @@ public class Case04 {
 		webDriver.findElement(By.className("btn-primary")).click();
 
 		// 3. コース詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlToBe("http://localhost:8080/lms/course/detail"));
+		pageLoadTimeout(10);
 
 		// 4. コース詳細画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/course/detail", webDriver.getCurrentUrl());
@@ -90,13 +89,13 @@ public class Case04 {
 		webDriver.findElement(By.className("dropdown-toggle")).click();
 
 		// 2. ヘッダーの機能タグのヘルプリンクをクリック
-		wait.until(ExpectedConditions.elementToBeClickable(By.linkText("ヘルプ")));
+		visibilityTimeout(By.linkText("ヘルプ"), 10);
 
 		// 3. ヘッダーの機能リンクをクリック
 		webDriver.findElement(By.linkText("ヘルプ")).click();
 
 		// 4. コース詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlToBe("http://localhost:8080/lms/help"));
+		pageLoadTimeout(10);
 
 		// 5. コース詳細画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/help", webDriver.getCurrentUrl());
@@ -118,14 +117,13 @@ public class Case04 {
 		String originalWindow = webDriver.getWindowHandle();
 
 		// 2.ヘッダーの機能タグのヘルプリンクをクリック
-		wait.until(ExpectedConditions.elementToBeClickable(By.linkText("よくある質問")));
+		visibilityTimeout(By.linkText("よくある質問"), 10);
 
 		// 3.ヘッダーの機能リンクをクリック
 		webDriver.findElement(By.linkText("よくある質問")).click();
 
 		// 4.新しいタブが開くまで待つ
-		wait.until(
-				ExpectedConditions.numberOfWindowsToBe(2));
+		pageLoadTimeout(10);
 
 		// 5.新しいタブへ切り替える
 		for (String windowHandle : webDriver.getWindowHandles()) {
