@@ -3,8 +3,6 @@ package jp.co.sss.lms.ct.f03_report;
 import static jp.co.sss.lms.ct.util.WebDriverUtils.*;
 import static org.junit.Assert.*;
 
-import java.time.Duration;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -14,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * 結合テスト レポート機能
@@ -37,9 +33,6 @@ public class Case07 {
 	static void after() {
 		closeDriver();
 	}
-
-	//待ち時間を最大10秒に設定する
-	final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
 
 	@Test
 	@Order(1)
@@ -68,7 +61,7 @@ public class Case07 {
 		webDriver.findElement(By.className("btn-primary")).click();
 
 		// 3. コース詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlToBe("http://localhost:8080/lms/course/detail"));
+		pageLoadTimeout(30);
 
 		// 4. コース詳細画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/course/detail", webDriver.getCurrentUrl());
@@ -87,7 +80,7 @@ public class Case07 {
 	void test03() {
 
 		// 検索結果欄までスクロール
-		scrollBy("400");
+		scrollBy("700");
 
 		// 1. ステータスが「未提出」
 		WebElement unpaidRow = webDriver.findElement(
@@ -97,7 +90,7 @@ public class Case07 {
 		unpaidRow.findElement(By.cssSelector("input[type='submit'][value='詳細']")).click();
 
 		// 3. コース詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlToBe("http://localhost:8080/lms/section/detail"));
+		pageLoadTimeout(20);
 
 		// 3. セクション詳細画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/section/detail", webDriver.getCurrentUrl());
@@ -119,7 +112,7 @@ public class Case07 {
 		webDriver.findElement(By.cssSelector("input.btn-default[value='日報【デモ】を提出する']")).click();
 
 		// 2. レポート登録画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlToBe("http://localhost:8080/lms/report/regist"));
+		pageLoadTimeout(10);
 
 		// 3. コース詳細画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/report/regist", webDriver.getCurrentUrl());
@@ -144,7 +137,7 @@ public class Case07 {
 		webDriver.findElement(By.className("btn-primary")).click();
 
 		// 3. コース詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlContains("http://localhost:8080/lms/section/detail"));
+		pageLoadTimeout(20);
 
 		// 4. コース詳細画面が遷移した（タイトルが変わったか）ことの確認
 		assertEquals("セクション詳細 | LMS", webDriver.getTitle());
