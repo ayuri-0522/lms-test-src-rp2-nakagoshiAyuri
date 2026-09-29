@@ -4,8 +4,6 @@ import static jp.co.sss.lms.ct.util.WebDriverUtils.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.Duration;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -14,8 +12,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * 結合テスト レポート機能
@@ -37,9 +33,6 @@ public class Case09 {
 	static void after() {
 		closeDriver();
 	}
-
-	//待ち時間を最大10秒に設定する
-	final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
 
 	@Test
 	@Order(1)
@@ -68,7 +61,7 @@ public class Case09 {
 		webDriver.findElement(By.className("btn-primary")).click();
 
 		// 3. コース詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlToBe("http://localhost:8080/lms/course/detail"));
+		pageLoadTimeout(60);
 
 		// 4. コース詳細画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/course/detail", webDriver.getCurrentUrl());
@@ -89,7 +82,7 @@ public class Case09 {
 		webDriver.findElement(By.partialLinkText("ようこそ受講生")).click();
 
 		// 2. セクション詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlContains("http://localhost:8080/lms/user/detail"));
+		pageLoadTimeout(30);
 
 		// 3. セクション詳細画面のURLになっているか確認する
 		assertTrue(webDriver.getCurrentUrl().contains("http://localhost:8080/lms/user/detail"));
@@ -107,7 +100,7 @@ public class Case09 {
 	@DisplayName("テスト04 該当レポートの「修正する」ボタンを押下しレポート登録画面に遷移")
 	void test04() {
 		// 週次レポートの列までスクロール
-		scrollBy("1000");
+		scrollBy("1200");
 
 		// 1.dailyReportSubmitId = 3 の「修正」ボタンをクリック
 		webDriver.findElement(
@@ -116,7 +109,7 @@ public class Case09 {
 				.click();
 
 		// 2. セクション詳細画面のURLが表示されるまで待つ
-		wait.until(ExpectedConditions.urlContains("http://localhost:8080/lms/report/regist"));
+		pageLoadTimeout(30);
 
 		// 3. レポート登録画面のURLになっているか確認する
 		assertTrue(webDriver.findElement(By.tagName("h2")).getText().contains("週報【デモ】"));
@@ -205,20 +198,21 @@ public class Case09 {
 		webDriver.findElement(
 				By.cssSelector("option[value='']")).click();
 
+		// 4.目標の達成度テキストボックスに文字を入力する
 		webDriver.findElement(By.cssSelector("textarea")).sendKeys("あいうえお");
 
 		// 提出ボタンまでスクロール
 		scrollBy("1000");
 
-		// 4. 『提出する』ボタンをクリック
+		// 5. 『提出する』ボタンをクリック
 		webDriver.findElement(By.className("btn-primary")).click();
 
-		// 5. レポート登録画面のURLになっているか確認する
+		// 6. レポート登録画面のURLになっているか確認する
 		assertEquals("http://localhost:8080/lms/report/complete", webDriver.getCurrentUrl());
 
-		// 6.「学習項目を入力した場合は、理解度は必須です。」と表示の確認
+		// 7.「目標の達成度は半角数字で入力してください。」と表示の確認
 		assertTrue(
-				webDriver.getPageSource().contains("理解度を入力した場合は、学習項目は必須です。"),
+				webDriver.getPageSource().contains("目標の達成度は半角数字で入力してください。"),
 				"エラーメッセージが表示されていません。");
 	}
 
@@ -226,21 +220,91 @@ public class Case09 {
 	@Order(8)
 	@DisplayName("テスト08 不適切な内容で修正して「提出する」ボタンを押下しエラー表示：目標の達成度が範囲外")
 	void test08() {
-		// TODO ここに追加
+		// 1.目標の達成度のテキストボックスの文字を消す
+		webDriver.findElement(By.cssSelector("textarea")).clear();
+
+		// 2.目標達成度のテキストボックスに「100」と入力する
+		webDriver.findElement(By.cssSelector("textarea")).sendKeys("100");
+
+		// 提出ボタンまでスクロール
+		scrollBy("1000");
+
+		// 3. 『提出する』ボタンをクリック
+		webDriver.findElement(By.className("btn-primary")).click();
+
+		// 4. レポート登録画面のURLになっているか確認する
+		assertEquals("http://localhost:8080/lms/report/complete", webDriver.getCurrentUrl());
+
+		// 5.「目標の達成度は、半角数字で、１～10の範囲内で入力してください。」と表示の確認
+		assertTrue(
+				webDriver.getPageSource().contains("目標の達成度は、半角数字で、１～10の範囲内で入力してください。"),
+				"エラーメッセージが表示されていません。");
+
 	}
 
 	@Test
 	@Order(9)
 	@DisplayName("テスト09 不適切な内容で修正して「提出する」ボタンを押下しエラー表示：目標の達成度・所感が未入力")
 	void test09() {
-		// TODO ここに追加
+		// 1.目標の達成度のテキストボックスの文字を消す
+		webDriver.findElement(By.cssSelector("textarea")).clear();
+
+		// 2.目標達成度のテキストボックスに「3」と入力する
+		webDriver.findElement(By.cssSelector("textarea")).sendKeys("3");
+
+		// 3.所感の文字を削除する
+		webDriver.findElement(By.id("content_1")).clear();
+
+		// 週次レポートの列までスクロール
+		scrollBy("800");
+
+		// 3. 『提出する』ボタンをクリック
+		webDriver.findElement(By.className("btn-primary")).click();
+
+		// 2. セクション詳細画面のURLが表示されるまで待つ
+		pageLoadTimeout(30);
+
+		// 4. レポート登録画面のURLになっているか確認する
+		assertEquals("http://localhost:8080/lms/report/complete", webDriver.getCurrentUrl());
+
+		// 5.「所感は必須です。」と表示の確認
+		assertTrue(
+				webDriver.getPageSource().contains("所感は必須です。"),
+				"エラーメッセージが表示されていません。");
+
 	}
 
 	@Test
 	@Order(10)
 	@DisplayName("テスト10 不適切な内容で修正して「提出する」ボタンを押下しエラー表示：所感・一週間の振り返りが2000文字超")
 	void test10() {
-		// TODO ここに追加
+		// 3.所感に「週報のサンプルです。」と入力する
+		webDriver.findElement(By.id("content_1")).sendKeys("週報のサンプルです。");
+
+		// 3.一週間の振り返りに2005字以上入力する
+		String text = "あ";
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < 2005; i++) {
+			sb.append(text);
+		}
+
+		webDriver.findElement(By.id("content_2")).sendKeys(sb.toString());
+
+		// 提出ボタンまでスクロール
+		scrollBy("800");
+
+		// 7. 『提出する』ボタンをクリック
+		webDriver.findElement(By.className("btn-primary")).click();
+
+		// 8. レポート登録画面のURLになっているか確認する
+		assertEquals("http://localhost:8080/lms/report/complete", webDriver.getCurrentUrl());
+
+		// 9.「一週間の振り返りの長さが最大値2000を超えています。」と表示の確認
+		assertTrue(
+				webDriver.getPageSource().contains("一週間の振り返りの長さが最大値2000を超えています。"),
+				"エラーメッセージが表示されていません。");
+
 	}
 
 }
