@@ -150,6 +150,10 @@ public class Case09 {
 				webDriver.getPageSource().contains("学習項目を入力した場合は、理解度は必須です。"),
 				"エラーメッセージが表示されていません。");
 
+		//6.test3のエビデンスを取得する
+		getEvidence(new Object() {
+		});
+
 	}
 
 	@Test
